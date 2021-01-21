@@ -6,6 +6,7 @@ module.exports = {
   },
   extends: [
     'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
     'airbnb',
     'airbnb/hooks',
     'prettier',
@@ -23,5 +24,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'react/jsx-closing-bracket-location': [1, 'after-props'],
+    'no-console': ['error', { allow: ['warn', 'error'] }],
   },
 };
