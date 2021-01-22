@@ -1,41 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Timer = () => {
-  const [elapsed, setElapsed] = useState(0);
+  const [seconds, setSeconds] = useState(0);
   const [active, setActive] = useState(false);
-  let started;
-  let timer;
-  function startTimer() {
-    started = Date.now();
-    const prevElapsed = elapsed;
-    const currentTimer = setInterval(() => {
-      const currentElapsed = Math.floor((Date.now() - started) / 1000);
-      setElapsed(prevElapsed + currentElapsed);
-    }, 1000);
-    return () => {
-      clearInterval(currentTimer);
-      return null;
-    };
+  const [timestamp, setTimestamp] = useState();
+  function toggle() {
+    if (!active) {
+      setTimestamp(Date.now());
+    }
+    setActive(!active);
+  }
+  function reset() {
+    setSeconds(0);
+    setActive(false);
   }
 
-  function handleClick() {
+  useEffect(() => {
+    let timeout = null;
     if (active) {
-      setActive(false);
-      timer();
-      timer = null;
+      timeout = setTimeout(() => {
+        const now = Date.now();
+        const elapsed = Math.floor((now - timestamp) / 1000);
+        setSeconds(elapsed + seconds);
+        setTimestamp(now);
+      }, 1000);
     } else {
-      setActive(true);
-      timer = startTimer();
-      console.warn(typeof timer);
+      clearTimeout(timeout);
     }
-    return null;
-  }
+    return () => clearTimeout(timeout);
+  }, [seconds, active, timestamp]);
 
   return (
     <div>
-      <p>Elapsed: {elapsed}</p>
-      <button type="button" onClick={handleClick}>
+      <p>Seconds: {seconds}</p>
+      <button type="button" onClick={toggle}>
         {!active ? 'Start' : 'Stop'}
+      </button>
+      <button type="button" onClick={reset}>
+        Reset
       </button>
     </div>
   );
