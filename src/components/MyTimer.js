@@ -1,3 +1,9 @@
+/**
+ * Just your basic timer component
+ * Resources:
+ *  - https://upmostly.com/tutorials/build-a-react-timer-component-using-hooks
+ */
+
 import React, { useEffect, useState } from 'react';
 
 const Timer = () => {
