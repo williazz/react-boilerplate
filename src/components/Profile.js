@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { auth0 } from '../secrets';
+import { AUTH0_SPA } from '../secrets';
 
 const Profile = () => {
   const {
@@ -14,15 +14,15 @@ const Profile = () => {
   useEffect(() => {
     const getUserMetadata = async () => {
       if (isLoading || !isAuthenticated) return;
-      const { domain } = auth0;
+      const { DOMAIN } = AUTH0_SPA;
 
       try {
         const accessToken = await getAccessTokenSilently({
-          audience: `https://${domain}/api/v2/`,
+          audience: `https://${DOMAIN}/api/v2/`,
           scope: 'read:current_user',
         });
 
-        const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user.sub}`;
+        const userDetailsByIdUrl = `https://${DOMAIN}/api/v2/users/${user.sub}`;
 
         const metadataResponse = await fetch(userDetailsByIdUrl, {
           headers: {
