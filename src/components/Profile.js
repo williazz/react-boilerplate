@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { AUTH0_SPA } from '../secrets';
+import { AUTH0 } from '../secrets';
 
 const Profile = () => {
   const {
@@ -10,17 +10,19 @@ const Profile = () => {
     isLoading,
   } = useAuth0();
   const [userMetadata, setUserMetadata] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
     const getUserMetadata = async () => {
       if (isLoading || !isAuthenticated) return;
-      const { DOMAIN } = AUTH0_SPA;
+      const { DOMAIN } = AUTH0;
 
       try {
         const accessToken = await getAccessTokenSilently({
           audience: `https://${DOMAIN}/api/v2/`,
           scope: 'read:current_user',
         });
+        setToken(accessToken);
 
         const userDetailsByIdUrl = `https://${DOMAIN}/api/v2/users/${user.sub}`;
 
@@ -40,7 +42,7 @@ const Profile = () => {
     };
 
     getUserMetadata();
-  }, []);
+  }, [token, isLoading, isAuthenticated, getAccessTokenSilently]);
   /* eslint-enable */
 
   if (isLoading) {
@@ -61,6 +63,7 @@ const Profile = () => {
             'No user metadata defined'
           )}
         </p>
+        <p>Token: {!token ? 'NO-TOKEN' : token}</p>
       </div>
     )
   );
