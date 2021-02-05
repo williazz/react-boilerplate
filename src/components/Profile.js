@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { AUTH0 } from '../secrets';
+import { AUTH0 } from '../config';
 
 const Profile = () => {
   const {
@@ -37,7 +37,7 @@ const Profile = () => {
         setUserMetadata(user_metadata);
         console.log({ userDetailsByIdUrl, user_metadata, accessToken });
       } catch (e) {
-        console.error('Ruh roh:', e.message);
+        console.error('Profile failed:', e.message);
       }
     };
 
