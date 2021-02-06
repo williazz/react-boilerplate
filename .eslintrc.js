@@ -27,5 +27,6 @@ module.exports = {
     'no-console': [1, { allow: ['warn', 'error'] }],
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
+    camelcase: ['off'],
   },
 };
