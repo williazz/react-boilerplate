@@ -16,28 +16,29 @@ const Profile = () => {
     const getUserMetadata = async () => {
       try {
         const accessToken = await getAccessTokenSilently({
-          domain: AUTH0_SPA.DOMAIN,
+          audience: `https://${AUTH0_SPA.DOMAIN}/api/v2/`,
           scope: 'read:current_user',
         });
 
-        const userDetailsByIdUrl = `${AUTH0_SPA.DOMAIN}users/${user.sub}`;
-
+        const userDetailsByIdUrl = `${AUTH0_SPA.AUDIENCE}users/${user.sub}`;
+        console.log(userDetailsByIdUrl);
         const metadataResponse = await axios.get({
           url: userDetailsByIdUrl,
           headers: {
-            authorization: ['Bearer', accessToken].join(' '),
+            Authorization: `Bearer ${accessToken}`,
           },
         });
 
         const { user_metadata } = await metadataResponse.json();
 
         setUserMetadata(user_metadata);
+        console.log('User metadata: ', user_metadata);
       } catch (err) {
         console.error(err);
       }
     };
     getUserMetadata();
-  }, [isLoading, isAuthenticated, getAccessTokenSilently]);
+  }, [isLoading, isAuthenticated, getAccessTokenSilently, userMetadata]);
 
   if (isLoading) return <p>Loading profile... </p>;
 
